@@ -6,7 +6,7 @@ const port = 3113;
 //middleware
 app.use(express.json());
 
-//route test
+//route tesyt
 app.get('/', (req, res) => {
     res.send('hello world');
 });
