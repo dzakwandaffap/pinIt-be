@@ -1,8 +1,21 @@
 const User = require('../models/userModel');
+const Counter = require('../models/counterModel');
+
+const getLatestId = async (req, res) => {
+    try {
+        const user = await User.findOne().sort({ id: 1 });
+        if (!user) {
+            return res.status(404).json({ message: 'No users found' });
+        }
+        res.status(200).json({ id: user.id });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 const createUser = async (req, res) => {
     try {
-        const { username, name, email, password } = req.body; 
+        const { username, name, email, password} = req.body; 
         const newUser = new User({ username, name, email, password });
         await newUser.save();
         res.status(201).json(newUser);
@@ -67,7 +80,8 @@ module.exports = {
     getAllUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getLatestId
 }
 
  
