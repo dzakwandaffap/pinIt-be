@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const port = 3113;
@@ -10,9 +11,10 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Database connection
-const dbURI = 'mongodb://localhost:27017/pinIt'; // Replace with your MongoDB connection string
+const dbURI = 'mongodb://localhost:27017/pinIt'; 
 
 mongoose.connect(dbURI)
     .then(() => app.listen(port, () => console.log(`Server running on port ${port}`)))

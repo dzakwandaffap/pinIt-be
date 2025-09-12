@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
+
 const{
     getAllUsers,
     getUserById,
     createUser,
     updateUser,
     deleteUser,
-    // getLatestId 
-} = require('../controllers/userController');
+    } = require('../controllers/userController');
 
 
 // User routes
@@ -19,7 +19,5 @@ router.route('/:id')
     .put(updateUser);
     
 router.route('/:id').delete(deleteUser);
-
-// router.route('/latest-id').get(getLatestId);
 
 module.exports = router;
