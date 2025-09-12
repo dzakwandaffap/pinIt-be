@@ -6,7 +6,7 @@ const{
     createUser,
     updateUser,
     deleteUser,
-    getLatestId 
+    // getLatestId 
 } = require('../controllers/userController');
 
 
@@ -20,6 +20,6 @@ router.route('/:id')
     
 router.route('/:id').delete(deleteUser);
 
-router.route('/latest-id').get(getLatestId);
+// router.route('/latest-id').get(getLatestId);
 
 module.exports = router;

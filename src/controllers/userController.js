@@ -1,17 +1,17 @@
 const User = require('../models/userModel');
-const Counter = require('../models/counterModel');
+// const Counter = require('../models/counterModel');
 
-const getLatestId = async (req, res) => {
-    try {
-        const user = await User.findOne().sort({ id: 1 });
-        if (!user) {
-            return res.status(404).json({ message: 'No users found' });
-        }
-        res.status(200).json({ id: user.id });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
+// const getLatestId = async (req, res) => {
+//     try {
+//         const user = await User.findOne().sort({ id: 1 });
+//         if (!user) {
+//             return res.status(404).json({ message: 'No users found' });
+//         }
+//         res.status(200).json({ id: user.id });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// }
 
 const createUser = async (req, res) => {
     try {
@@ -59,7 +59,7 @@ const updateUser = async (req, res) => {
         }
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
     }
 }
 
@@ -81,7 +81,7 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    getLatestId
+    // getLatestId
 }
 
  

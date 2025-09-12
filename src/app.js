@@ -16,4 +16,4 @@ const dbURI = 'mongodb://localhost:27017/pinIt'; // Replace with your MongoDB co
 
 mongoose.connect(dbURI)
     .then(() => app.listen(port, () => console.log(`Server running on port ${port}`)))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err));  
