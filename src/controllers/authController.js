@@ -25,18 +25,12 @@ const login = async (req, res) => {
     }
 }
 
-const register = async (req, res) => {
-    try {
-        const { username, name, email, password } = req.body; 
-        const newUser = new User({ username, name, email, password });
-        await newUser.save();
-        res.status(201).json(newUser);
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+const logout = (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logout successful' });
 }
-
+    
 module.exports = {
-    login
+    login,
+    logout
 }
