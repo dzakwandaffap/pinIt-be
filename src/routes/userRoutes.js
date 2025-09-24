@@ -1,25 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
+const verifyToken = require('../middleware/auth');
+const {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  getProfile
+} = require('../controllers/userController');
 
-const{
-    getAllUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser,
-    } = require('../controllers/userController');
-const verifyToken = require('../../middleware/auth');
+// Profile route
+router.get('/profile', verifyToken, getProfile);
 
+// CRUD
+router.route('/')
+  .get(verifyToken, getAllUsers)
+  .post(createUser);
 
-// User routes
-router.route('/', verifyToken).get(getAllUsers).post(createUser);
-
-
-router.route('/:id', verifyToken)
-    .get(getUserById)
-    .put(updateUser);
-    
-router.route('/:id', verifyToken).delete(deleteUser);
+router.route('/:id')
+  .get(verifyToken, getUserById)
+  .put(updateUser)
+  .delete(verifyToken, deleteUser);
 
 module.exports = router;
