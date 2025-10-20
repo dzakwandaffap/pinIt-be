@@ -2,6 +2,7 @@
   const router = express.Router();
   const verifyToken = require('../middleware/auth'); 
     
+const fileUpload = require('../middleware/fileUpload');
   const {
     getAllUsers,
     getUserById,
@@ -14,7 +15,7 @@
 
   // Profile route
 router.get('/profile', verifyToken, getProfile)
-router.put('/profile', verifyToken, updateProfile);
+router.put('/profile', verifyToken, fileUpload, updateProfile);
 
   // CRUD
   router.route('/')
