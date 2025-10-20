@@ -103,9 +103,13 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { username, name, email, password, bio, gender, image, numberPhone } = req.body;
+    const { username, name, email, password, bio, gender, numberPhone } = req.body;
 
-    const updateData = { username, name, email, bio, gender, image, numberPhone };
+    const updateData = { username, name, email, bio, gender, numberPhone };
+
+    if (req.file) {
+      updateData.image = req.file.path;
+    }
 
     if (password && password.trim() !== '') {
       const salt = await bcrypt.genSalt(10);

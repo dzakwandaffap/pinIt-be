@@ -1,34 +1,41 @@
-const mongoose = require('mongoose');
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { success, error, notFound } = require('../utils/responseHelper');
 
 const login = async (req, res) => {
-    try {
-        const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-        const user = await User.findOne({ username });
-        if(!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-        res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    const user = await User.findOne({ username });
+    if (!user) {
+      return notFound(res, 'User not found');
+    }
 
-        res.status(200).json({ message: 'Login successful', token });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return error(res, 'Invalid credentials', 400);
     }
-    catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    return success(res, { token }, 'Login successful');
+  } catch (err) {
+    return error(res, err.message);
+  }
+};
 
 const logout = (req, res) => {
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Logout successful' });
-}
+  res.clearCookie('token');
+  return success(res, null, 'Logout successful');
+};
     
 module.exports = {
     login,
