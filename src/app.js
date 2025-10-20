@@ -5,12 +5,16 @@ const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 const cors = require('cors');
 
+
 const app = express();
 const port = 3113;
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+//images uoload folder access
+app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.use('/api/users', userRoutes);

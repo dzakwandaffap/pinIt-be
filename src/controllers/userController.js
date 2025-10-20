@@ -108,7 +108,8 @@ const updateProfile = async (req, res) => {
     const updateData = { username, name, email, bio, gender, numberPhone };
 
     if (req.file) {
-      updateData.image = req.file.path;
+      updateData.image = req.file.path.replace(/\\/g, '/');
+
     }
 
     if (password && password.trim() !== '') {

@@ -5,39 +5,28 @@ const { success, error, notFound } = require('../utils/responseHelper');
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
-    if (!user) {
-      return notFound(res, 'User not found');
+    if (!email || !password) {
+      return error(res, 'Email and password are required', 400);
     }
+
+    const user = await User.findOne({ email });
+    if (!user) return notFound(res, 'User not found');
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return error(res, 'Invalid credentials', 400);
-    }
+    if (!isMatch) return error(res, 'Invalid password', 401);
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1d',
-    });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    });
-
-    return success(res, { token }, 'Login successful');
+    return success(res, { token, user }, 'Login successful');
   } catch (err) {
     return error(res, err.message);
   }
 };
 
-const logout = (req, res) => {
-  res.clearCookie('token');
-  return success(res, null, 'Logout successful');
+const logout = async (req, res) => {
+  return success(res, null, 'Logout successful (client should delete token)');
 };
-    
-module.exports = {
-    login,
-    logout
-}
+
+module.exports = { login, logout };

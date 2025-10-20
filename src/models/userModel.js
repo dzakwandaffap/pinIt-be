@@ -45,7 +45,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Hash password sebelum simpan
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
